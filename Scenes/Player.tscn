@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://Assets/PlaceHolderPlayer.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="SegmentShape2D" id=2]
+a = Vector2( 33, -32 )
+b = Vector2( 33, 32 )
+
+[sub_resource type="SegmentShape2D" id=3]
+a = Vector2( 32, 33 )
+b = Vector2( -32, 33 )
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+current = true
+
+[node name="WallSlideBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallSlideBox"]
+shape = SubResource( 2 )
+
+[node name="FloorDetector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorDetector"]
+shape = SubResource( 3 )
+
+[connection signal="body_entered" from="WallSlideBox" to="." method="_on_WallSlideBox_body_entered"]
+[connection signal="body_exited" from="WallSlideBox" to="." method="_on_WallSlideBox_body_exited"]
+[connection signal="body_entered" from="FloorDetector" to="." method="_on_FloorDetector_body_entered"]
+[connection signal="body_exited" from="FloorDetector" to="." method="_on_FloorDetector_body_exited"]
